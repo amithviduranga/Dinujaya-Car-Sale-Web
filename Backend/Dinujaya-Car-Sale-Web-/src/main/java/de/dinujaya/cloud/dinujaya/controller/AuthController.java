@@ -24,13 +24,13 @@ public class AuthController {
 
         user.setRole(Role.CUSTOMER);
         userService.save(user);
-        return ResponseEntity.ok("User registered successfully");
+        return ResponseEntity.ok("User  registered successfully");
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@RequestBody User user) {
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+                new UsernamePasswordAuthe nticationToken(user.getUsername(), user.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         return ResponseEntity.ok("User logged in successfully");
