@@ -91,7 +91,7 @@ export default function App() {
 
           <Title style={styles.title}>Welcome <br></br> Dinujaya Car Sale</Title>
           <Text style={styles.text}>
-            Welcome back  to <span style={styles.boldText}>Dinujaya Car Sale</span>! <br></br>Please enter your details below to sign in.
+            Welcome back to <span style={styles.boldText}>Dinujaya Car Sale</span>! <br></br>Please enter your details below to sign in.
           </Text>
         </div>
         <Form
