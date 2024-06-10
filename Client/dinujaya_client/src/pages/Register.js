@@ -1,21 +1,48 @@
-// Registration.js
 
 import React from "react";
-import { Button, Checkbox, Form, Input, Typography,theme,Grid } from "antd";
-import { LockOutlined, MailOutlined,UserOutlined ,EnvironmentOutlined } from "@ant-design/icons";
+import { Button, Checkbox, Form, Input, Typography,theme,Grid,message } from "antd";
+import { LockOutlined, MailOutlined,UserOutlined ,EnvironmentOutlined ,PhoneOutlined} from "@ant-design/icons";
+import { Route, useHistory } from 'react-router-dom';
+import axios from "axios";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const { useToken } = theme;
 const { useBreakpoint } = Grid;
 const { Text, Title, Link } = Typography;
 
 export default function Registration() {
+ 
+  const apiUrl = process.env.REACT_APP_API_URL;
+
   const { token } = useToken();
   const screens = useBreakpoint();
 
-  const onFinish = (values) => {
-    console.log("Received values of form: ", values);
+  const onFinish = async (values) => {
+    try {
+      const response = await axios.post(`${apiUrl}/auth/register`, values); 
+      if (response.status === 200) {
+        message.success("Registration successful. Please login.");
+     
+        
+      } else {
+        // Handle other status codes
+        console.log("Response status:", response.status);
+      }
+    } catch (error) {
+      // Axios error handling
+      if (error.response && error.response.data === "Username or Email already exists") {
+        // Bad request error
+        message.error("Username or Email already exists.Please user another username");
+      } else {
+        // Other errors
+        console.error("Error:", error);
+      }
+    }
   };
-
+  
+   
+  
   const styles = {
     container: {
       margin: "0 auto",
@@ -82,10 +109,10 @@ export default function Registration() {
           }}
           onFinish={onFinish}
           layout="vertical"
-          requiredMark="optional"
+          requiredMark="required"
         >
           <Form.Item
-            name="firstname"
+            name="firstName"
             rules={[
               {
                 type: "text",
@@ -98,7 +125,7 @@ export default function Registration() {
             <Input prefix={<UserOutlined />} placeholder="First Name" style={styles.input} />
           </Form.Item>
           <Form.Item
-            name="lastname"
+            name="lastName"
             rules={[
               {
                 type: "text",
@@ -122,6 +149,19 @@ export default function Registration() {
           >
             
             <Input prefix={<EnvironmentOutlined />} placeholder="Address" style={styles.input} />
+          </Form.Item>
+          <Form.Item
+            name="mobile"
+            rules={[
+              {
+                type: "text",
+                required: true,
+                message: "Please input your mobile Number!",
+              },
+            ]}
+          >
+            
+            <Input prefix={<PhoneOutlined />} placeholder="Mobile Number" style={styles.input} />
           </Form.Item>
           <Form.Item
             name="email"
